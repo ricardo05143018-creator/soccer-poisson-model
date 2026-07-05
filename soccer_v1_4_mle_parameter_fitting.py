@@ -131,11 +131,10 @@ def negative_log_likelihood(params):
         h_g, a_g = match["h_goals"], match["a_goals"]
         lmbda_h, lmbda_a = calculate_expected_goals(home, away, decay_rate)
         prob_matrix = build_score_matrix(lmbda_h, lmbda_a, rho)
-        match_prob = prob_matrix[min(h_g, 5), min(a_g, 5)]
-        if match_prob <= 0:
-            total_neg_ll += 100.0
-        else:
-            total_neg_ll -= math.log(match_prob)
+
+        # HOTFIX: clip matrix probabilities to avoid numerical underflow in math.log
+        match_prob = max(prob_matrix[min(h_g, 5), min(a_g, 5)], 1e-12)
+        total_neg_ll -= math.log(match_prob)
     return total_neg_ll
 
 
