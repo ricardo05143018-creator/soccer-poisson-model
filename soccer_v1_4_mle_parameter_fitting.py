@@ -10,6 +10,7 @@ from scipy.optimize import minimize
 
 TOURNAMENT_AVG_HOME_GOALS = 1.42
 TOURNAMENT_AVG_AWAY_GOALS = 1.18
+LOCAL_DEV = True
 
 # rough estimates from group-stage averages (manual tuning)
 teams_data = {
@@ -140,52 +141,52 @@ def negative_log_likelihood(params):
 
 # =============================================================
 if __name__ == "__main__":
+    if LOCAL_DEV:
+        initial_rho = 0.08
+        initial_decay = 0.15
+        initial_brier = evaluate_system_brier(initial_rho, initial_decay)
 
-    initial_rho = 0.08
-    initial_decay = 0.15
-    initial_brier = evaluate_system_brier(initial_rho, initial_decay)
+        print(f"  Baseline: rho={initial_rho:.2f} | decay={initial_decay:.2f} | Brier={initial_brier:.4f}\n")
 
-    print(f"  Baseline: rho={initial_rho:.2f} | decay={initial_decay:.2f} | Brier={initial_brier:.4f}\n")
+        mle_result = minimize(
+            negative_log_likelihood,
+            [initial_rho, initial_decay],
+            method='SLSQP',
+            bounds=((0.0, 0.20), (0.0, 0.40))
+        )
 
-    mle_result = minimize(
-        negative_log_likelihood,
-        [initial_rho, initial_decay],
-        method='SLSQP',
-        bounds=((0.0, 0.20), (0.0, 0.40))
-    )
+        if mle_result.success:
+            opt_rho, opt_decay = mle_result.x
+            optimized_brier = evaluate_system_brier(opt_rho, opt_decay)
 
-    if mle_result.success:
-        opt_rho, opt_decay = mle_result.x
-        optimized_brier = evaluate_system_brier(opt_rho, opt_decay)
+            print(f"=== MLE Calibration Summary (v1.4) ===")
+            print(f"  rho:        {opt_rho:.4f}")
+            print(f"  decay:      {opt_decay:.4f}")
+            print(f"  Brier (pre):  {initial_brier:.4f}")
+            print(f"  Brier (post): {optimized_brier:.4f}")
+            print(f"  Delta:        {(optimized_brier - initial_brier):.4f}")
+            print("-" * 40)
 
-        print(f"=== MLE Calibration Summary (v1.4) ===")
-        print(f"  rho:        {opt_rho:.4f}")
-        print(f"  decay:      {opt_decay:.4f}")
-        print(f"  Brier (pre):  {initial_brier:.4f}")
-        print(f"  Brier (post): {optimized_brier:.4f}")
-        print(f"  Delta:        {(optimized_brier - initial_brier):.4f}")
-        print("-" * 40)
+            home_team = "Brazil"
+            away_team = "Norway"
 
-        home_team = "Brazil"
-        away_team = "Norway"
+            print(f"\nRunning Poisson Predictor v1.4 | {home_team} vs {away_team}")
+            lmbda_h, lmbda_a = calculate_expected_goals(home_team, away_team, opt_decay)
+            print(f"  lambda_Home: {lmbda_h:.4f}")
+            print(f"  lambda_Away: {lmbda_a:.4f}\n")
 
-        print(f"\nRunning Poisson Predictor v1.4 | {home_team} vs {away_team}")
-        lmbda_h, lmbda_a = calculate_expected_goals(home_team, away_team, opt_decay)
-        print(f"  lambda_Home: {lmbda_h:.4f}")
-        print(f"  lambda_Away: {lmbda_a:.4f}\n")
+            prob_matrix = build_score_matrix(lmbda_h, lmbda_a, opt_rho)
+            h, a, d = outcome_probs(prob_matrix)
 
-        prob_matrix = build_score_matrix(lmbda_h, lmbda_a, opt_rho)
-        h, a, d = outcome_probs(prob_matrix)
+            print(f"=== {home_team} vs {away_team} Inference Summary ===")
+            print(f"  Win Prob ({home_team}): {h * 100:.2f}%")
+            print(f"  Win Prob ({away_team}): {a * 100:.2f}%")
+            print(f"  Draw Prob:           {d * 100:.2f}%")
+            print("-" * 40)
 
-        print(f"=== {home_team} vs {away_team} Inference Summary ===")
-        print(f"  Win Prob ({home_team}): {h * 100:.2f}%")
-        print(f"  Win Prob ({away_team}): {a * 100:.2f}%")
-        print(f"  Draw Prob:           {d * 100:.2f}%")
-        print("-" * 40)
+            max_idx = np.unravel_index(np.argmax(prob_matrix), prob_matrix.shape)
+            print(f"  Most Likely Score: {max_idx[0]}-{max_idx[1]}")
+            print(f"  Confidence:        {prob_matrix[max_idx] * 100:.2f}%")
 
-        max_idx = np.unravel_index(np.argmax(prob_matrix), prob_matrix.shape)
-        print(f"  Most Likely Score: {max_idx[0]}-{max_idx[1]}")
-        print(f"  Confidence:        {prob_matrix[max_idx] * 100:.2f}%")
-
-    else:
-        print("  Optimizer failed to converge.")
+        else:
+            print("  Optimizer failed to converge.")
