@@ -1,19 +1,23 @@
-# World Cup Poisson Predictor (v1.3)
+# World Cup Poisson Predictor (v1.4)
 
-Added a basic evaluation loop over completed knockout matches to check Brier score miscalibration.
+Dumped manual tuning after V1.3's 1-1 France vs Paraguay prediction got cleanly slapped by Mbappe's 0-1 penalty reality check. Swapped in automated MLE calibration over recent knockout data.
 
 ## What changed
-- Batch evaluation loop over 12 completed historical matches.
-- Multi-class Brier score tracking per match + average.
+- Replaced human parameter guessing with automated optimization using scipy SLSQP minimize.
+- Training set: 8 completed historical knockout matches (Jul 3-5).
 
-## Output Matrix Log
-- Avg Brier Score: `0.4193`
-- Worst fit: Germany vs Paraguay `0.9809` (Model expected a home win, heavily punished by the 1-1 deadlock)
+## MLE Calibration Log
+- rho: `0.0000` (DC correction collapsed — 8 samples not enough to stabilize)
+- decay: `0.4000` (hit the hard upper bound, heavy overfitting)
+- Brier (pre): `0.3599`
+- Brier (post): `0.3463`
+- Delta: `-0.0136`
 
-## Blind Test (Paraguay vs France)
-- `19.55% 56.54% 23.91%` (Home Win, Away Win, Draw)
-- Most likely score: `1-1` at `11.28%`
+## Blind Test (Brazil vs Norway)
+- `50.29% 26.80% 22.91%` (Home Win, Away Win, Draw)
+- Most likely score: `1-1` at `10.36%`
 
 ## Still broken
-- DECAY_RATE and RHO are still static empirical constants, not fitted.
-- Team baseline ratings are still manually assigned from group tables.
+- 8 matches is nowhere near enough data for stable joint likelihood estimation.
+- Team baseline attack/defense parameters are still arbitrary fixed constants from group tables.
+- Need regularization (L2 or Dirichlet priors) on rho to stop it from flattening to absolute zero.
