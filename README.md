@@ -13,14 +13,13 @@ V1.4 completely blew up on the Brazil and Mexico upsets. Slapped an L2 penalty o
 ## MLE Calibration Log
 - rho: `0.0230`
 - decay: `0.1589`
-- Brier (pre): `0.4207`
-- Brier (post): `0.4160`
+- brier: `0.4207 -> 0.4160`
 
 ## Blind Test (Portugal vs Spain)
-- Win Prob (Portugal): `40.50%`
-- Win Prob (Spain): `34.97%`
-- Draw Prob: `24.53%`
-- Most Likely Score: `1-1 (11.15%)`
+- Win Prob (Portugal): `40.50%` (90 mins)
+- Win Prob (Spain): `34.97%` (90 mins)
+- Push to Extra Time: `24.53%` (90 mins draw)
+- Most Likely 90-Min Score: `1-1 (11.15%)`
 
 ## Still broken
 - Teams data dictionary is completely static. Hardcoded group stage stats don't update automatically.
