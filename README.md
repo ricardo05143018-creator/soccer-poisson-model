@@ -1,23 +1,18 @@
-# World Cup Poisson Predictor (v1.4)
+# World Cup Poisson Predictor (v1.5)
 
-Dumped manual tuning after V1.3's 1-1 France vs Paraguay prediction got cleanly slapped by Mbappe's 0-1 penalty reality check. Swapped in automated MLE calibration over recent knockout data.
+Added an L2 regularization layer after V1.4 overfitted and slammed straight into the boundaries on this morning's upsets (Brazil 1-2, Mexico 2-3).
 
 ## What changed
-- Replaced human parameter guessing with automated optimization using scipy SLSQP minimize.
-- Training set: 8 completed historical knockout matches (Jul 3-5).
+- Added L2 penalty layer (lambda = 15.0) to anchor rho and decay.
+- Expanded historical training data to 10 knockout matches to include today's results.
+- Kept optimization strictly in 2D to prevent overfitting under small sample size.
 
 ## MLE Calibration Log
-- rho: `0.0000` (DC correction collapsed — 8 samples not enough to stabilize)
-- decay: `0.4000` (hit the hard upper bound, heavy overfitting)
-- Brier (pre): `0.3599`
-- Brier (post): `0.3463`
-- Delta: `-0.0136`
-
-## Blind Test (Brazil vs Norway)
-- `50.29% 26.80% 22.91%` (Home Win, Away Win, Draw)
-- Most likely score: `1-1` at `10.36%`
+- rho: `0.0230` (pulled back from 0.0000 collapse via L2 anchor)
+- decay: `0.1589` (escaped the 0.4000 boundary wall trapping)
+- Brier (pre): `0.4207` (V1.4 baseline heavily punished by July 6 cold results)
+- Brier (post): `0.4160`
 
 ## Still broken
-- 8 matches is nowhere near enough data for stable joint likelihood estimation.
-- Team baseline attack/defense parameters are still arbitrary fixed constants from group tables.
-- Need regularization (L2 or Dirichlet priors) on rho to stop it from flattening to absolute zero.
+- Just blindly trusting the SLSQP success flag without tracking bounds.
+- No clue if the optimal valley is actually stable. Need a quick decay sweep.
