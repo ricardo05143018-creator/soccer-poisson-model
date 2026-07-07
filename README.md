@@ -1,25 +1,21 @@
-# World Cup Poisson Predictor (v1.5.1)
+# World Cup Poisson Predictor (v1.5.2)
 
-V1.4 completely blew up on the Brazil and Mexico upsets. Slapped an L2 penalty on the loss function to drag parameters away from the walls, and added bounds/sweep diagnostics so the engine actually predicts upcoming matches instead of just idling.
+L2 anchor got wiped out by the USA 1-4 blowout, dropping rho back to 0.0000. Added USA and Belgium to fix KeyErrors.
 
 ## What changed
-- Added L2 penalty (lambda = 15.0) to anchor rho and decay.
-- Tossed today's 2 new knockout matches into the training pool (10 total).
-- Kept optimization strictly in 2D.
-- Added a quick bounds check for SLSQP limits.
-- Added a decay sensitivity sweep.
-- Brought back the inference loop for live upcoming predictions.
+- Added USA and Belgium to teams_data
+- Tossed 2 more knockout matches into the training pool (12 total)
 
 ## MLE Calibration Log
-- rho: `0.0230`
-- decay: `0.1589`
-- brier: `0.4207 -> 0.4160`
+- rho: `0.0000` (trapped on the wall again)
+- decay: `0.1576`
+- brier: `0.4337 -> 0.4263`
 
-## Blind Test (Portugal vs Spain)
-- Win Prob (Portugal): `40.50%` (90 mins)
-- Win Prob (Spain): `34.97%` (90 mins)
-- Push to Extra Time: `24.53%` (90 mins draw)
-- Most Likely 90-Min Score: `1-1 (11.15%)`
+## Blind Test (Argentina vs Egypt)
+- Win Prob (Argentina): `68.31%` (90 mins)
+- Win Prob (Egypt): `13.07%` (90 mins)
+- Push to Extra Time: `18.62%` (90 mins draw)
+- Most Likely 90-Min Score: `2-0 (11.58%)`
 
 ## Still broken
 - Teams data dictionary is completely static. Hardcoded group stage stats don't update automatically.
