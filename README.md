@@ -15,7 +15,7 @@ Switzerland 0-0 draw dragged rho back to 0.0329. Added Argentina and Switzerland
 - Win Prob (France): `64.14%` (90 mins)
 - Win Prob (Morocco): `15.12%` (90 mins)
 - Push to Extra Time: `20.74%` (90 mins draw)
-- Most Likely 90-Min Score: `2-0 (11.01%)`
+- Most Likely 90-Min Score: `2-0 (11.01%)` (Nailed it！)
 
 ## Still broken
 - Teams data dictionary is completely static. Hardcoded group stage stats don't update automatically.
