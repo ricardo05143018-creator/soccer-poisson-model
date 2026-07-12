@@ -9,19 +9,19 @@ Added Spain 2-1 (hit direction). Total pool at 16 matches. rho stayed flat at 0.
 ## MLE Calibration Log
 - rho: `0.0329`
 - decay: `0.1572`
-- brier: `0.4220 -> 0.4189`
+- brier: `0.4220 -> 0.4225`
 
 ## Blind Test (Norway vs England)
 - Win Prob (Norway): `41.38%` (90 mins)
 - Win Prob (England): `33.93%` (90 mins)
 - Push to Extra Time: `24.69%` (90 mins draw)
-- Most Likely 90-Min Score: `1-1 (11.23%)`
+- Most Likely 90-Min Score: `1-1 (11.23%)` (Nailed it!)
 
 ## Blind Test (Argentina vs Switzerland)
 - Win Prob (Argentina): `57.97%` (90 mins)
 - Win Prob (Switzerland): `20.01%` (90 mins)
 - Push to Extra Time: `22.03%` (90 mins draw)
-- Most Likely 90-Min Score: `1-1 (10.14%)`
+- Most Likely 90-Min Score: `1-1 (10.14%)` (Nailed it!)
 
 ## Still broken
 - Teams data dictionary is completely static. Hardcoded group stage stats don't update automatically.
