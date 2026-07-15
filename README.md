@@ -1,61 +1,34 @@
-# World Cup Poisson Predictor (v1.6.2)
+# World Cup Poisson Predictor (v1.6.3)
 
-Since the math and convergence logic are finally stable in v1.6.1, this is just a quick refactor to run multiple matches at once instead of hardcoding a single fixture.
+So v1.6.2 completely missed the France vs Spain match because it treated years-old defensive stats the exact same as recent form. I added the 0-2 result in a rolling update this morning, but the underlying engine still needed an actual fix.
 
-Added the Argentina vs England semi-final alongside France vs Spain.
+This version finally adds exponential time-decay weighting. Recent matches matter a lot, old matches barely matter.
 
 ## Updates
-- Refactored the single-match inference block into a simple loop.
-- Calibration logs and mathematical boundaries are identical to v1.6.1.
+- Added a time-decay weight to every match based on its index (half-life = 40 matches).
+- Applied these weights to the global baseline, the iterative solver, and the final MLE loss function.
+- Cleaned up some duplicate variables I left in the script.
 
 ## Calibration Log
-- Iteration: `Converged in 46 rounds`
-- Mathematical rho limit: `0.2702`
+- Iteration: `Converged in 32 rounds` (way faster now that old noise is damped out)
+- Mathematical rho limit: `0.3724` (jumped up because recent matches are tighter)
 - Applied ceiling: `0.2000`
-- Constrained rho: `0.2000` (optimizer hit the ceiling again, but the 1-1 empirical variance explains it)
+- Constrained rho: `0.2000` (optimizer still hits the ceiling, 1-1 draws are just too common)
 
-Low-Score Diagnostics:
-- 0-0: `11 actual / 10.54 expected`
-- 1-0: `6 actual / 11.27 expected`
-- 0-1: `7 actual / 9.64 expected`
-- 1-1: `17 actual / 9.90 expected`
+Low-Score Diagnostics (Unweighted Baseline):
+- 0-0: `11 actual / 10.28 expected`
+- 1-0: `6 actual / 11.46 expected`
+- 0-1: `7 actual / 10.29 expected`
+- 1-1: `17 actual / 11.28 expected`
 
-## Semi-Final Predictions (90-min regular time)
+## Match 2 Prediction (Argentina vs England)
 
-**Match 1: France vs Spain**
-- France win: `32.33%`
-- Spain win:  `22.29%`
-- Draw:       `45.39%`
-- Top score:  `0-0 (31.22%)`
+With time-decay active, England's recent form gives them a much clearer edge than in v1.6.2.
 
-**Match 2: Argentina vs England**
-- Argentina win: `31.01%`
-- England win:   `39.64%`
-- Draw:          `29.35%`
-- Top score:     `1-1 (13.84%)`
+- Argentina win: `29.45%`
+- England win:   `41.33%`
+- Draw:          `29.22%`
+- Top score:     `1-1 (13.79%)`
 
 ## What's still broken
-- No match recency weighting or time-decay constants yet.
-- Still no out-of-sample backtesting pipeline.
-
----
-## Rolling Update (July 15)
-
-The v1.6.2 model completely missed the France vs Spain match (actual score 0-2). 
-
-Like I mentioned in the known gaps yesterday, not having time-decay weighting is a big problem. The model treated France's old defensive stats exactly the same as their current form, so Spain was just undervalued.
-
-I added this 0-2 result back into the dataset (now 100 matches total) and re-ran the solver to see how it affects the Argentina vs England match.
-
-### What changed after adding the match
-- The win probabilities for Argentina and England actually shifted. Since the solver estimates attack/defense based on opponent strength, Spain winning 2-0 rippled through the rest of the teams.
-- The iteration loop converged in 45 rounds instead of 46.
-- Math cap for rho shifted slightly to `0.2712`.
-
-### Updated Inference (Argentina vs England)
-- Argentina win: `31.70%` (+0.69%)
-- England win:   `38.89%` (-0.75%)
-- Draw:          `29.41%`
-- Top score:     `1-1 (13.86%)`
-
-I definitely need to figure out time-decay weighting for v1.6.3.
+- Still no proper out-of-sample backtesting pipeline.
