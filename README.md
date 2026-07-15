@@ -37,3 +37,24 @@ Low-Score Diagnostics:
 ## What's still broken
 - No match recency weighting or time-decay constants yet.
 - Still no out-of-sample backtesting pipeline.
+
+## Rolling Update (July 15)
+
+The v1.6.2 model completely missed the France vs Spain match (actual score 0-2). 
+
+Like I mentioned in the known gaps yesterday, not having time-decay weighting is a big problem. The model treated France's old defensive stats exactly the same as their current form, so Spain was just undervalued.
+
+I added this 0-2 result back into the dataset (now 100 matches total) and re-ran the solver to see how it affects the Argentina vs England match.
+
+### What changed after adding the match
+- The win probabilities for Argentina and England actually shifted. Since the solver estimates attack/defense based on opponent strength, Spain winning 2-0 rippled through the rest of the teams.
+- The iteration loop converged in 45 rounds instead of 46.
+- Math cap for rho shifted slightly to `0.2712`.
+
+### Updated Inference (Argentina vs England)
+- Argentina win: `31.70%` (+0.69%)
+- England win:   `38.89%` (-0.75%)
+- Draw:          `29.41%`
+- Top score:     `1-1 (13.86%)`
+
+I definitely need to figure out time-decay weighting for v1.6.3.
