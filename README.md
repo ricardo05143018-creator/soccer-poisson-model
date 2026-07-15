@@ -38,6 +38,7 @@ Low-Score Diagnostics:
 - No match recency weighting or time-decay constants yet.
 - Still no out-of-sample backtesting pipeline.
 
+---
 ## Rolling Update (July 15)
 
 The v1.6.2 model completely missed the France vs Spain match (actual score 0-2). 
