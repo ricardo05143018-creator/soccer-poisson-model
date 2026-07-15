@@ -28,7 +28,7 @@ With time-decay active, England's recent form gives them a much clearer edge tha
 - Argentina win: `29.45%`
 - England win:   `41.33%`
 - Draw:          `29.22%`
-- Top score:     `1-1 (13.79%)`
+- Top score:     `1-1 (13.79%)` (nailed it!)
 
 ## What's still broken
 - Still no proper out-of-sample backtesting pipeline.
