@@ -110,7 +110,8 @@ historical_matches = [
     {"home": "France", "away": "Morocco", "h_goals": 2, "a_goals": 0, "result": "H"},
     {"home": "Spain", "away": "Belgium", "h_goals": 2, "a_goals": 1, "result": "H"},
     {"home": "Norway", "away": "England", "h_goals": 1, "a_goals": 1, "result": "D"},
-    {"home": "Argentina", "away": "Switzerland", "h_goals": 1, "a_goals": 1, "result": "D"}
+    {"home": "Argentina", "away": "Switzerland", "h_goals": 1, "a_goals": 1, "result": "D"},
+    {"home": "France", "away": "Spain", "h_goals": 0, "a_goals": 2, "result": "A"}
 ]
 
 # global baseline expected goals
@@ -270,7 +271,6 @@ if __name__ == "__main__":
 
         # --- run inference on multiple semi-final matches ---
         matches_to_infer = [
-            ("France", "Spain"),
             ("Argentina", "England")
         ]
 
