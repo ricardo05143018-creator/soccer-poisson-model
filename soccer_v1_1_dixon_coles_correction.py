@@ -4,10 +4,9 @@ Date: July 2026
 """
 
 import math
-import os
 import numpy as np
 
-# Hardcoded tournament averages from completed group stage
+# hardcoded tournament averages from completed group stage
 TOURNAMENT_AVG_HOME_GOALS = 1.42
 TOURNAMENT_AVG_AWAY_GOALS = 1.18
 
@@ -19,14 +18,14 @@ teams_data = {
 
 
 def calculate_expected_goals(home_team, away_team):
-    """compute expected goals (lambdas)"""
+    # compute expected goals (lambdas)
     home_lambda = teams_data[home_team]["attack"] * teams_data[away_team]["defense"] * TOURNAMENT_AVG_HOME_GOALS
     away_lambda = teams_data[away_team]["attack"] * teams_data[home_team]["defense"] * TOURNAMENT_AVG_AWAY_GOALS
     return home_lambda, away_lambda
 
 
 def poisson_probability(lmbda, k):
-    """poisson pmf"""
+    # poisson pmf"""
     if lmbda <= 0:
         return 0.0 if k > 0 else 1.0
     return (lmbda ** k) * math.exp(-lmbda) / math.factorial(k)
@@ -46,7 +45,7 @@ def dixon_coles_tau(i, j, lmbda_h, lmbda_a, rho=0.08):
 
 
 def generate_score_matrix(lmbda_h, lmbda_a, max_goals=6):
-    """build joint probability matrix with DC patch"""
+    # build joint probability matrix with DC patch
     prob_matrix = np.zeros((max_goals, max_goals))
     for i in range(max_goals):
         for j in range(max_goals):
@@ -58,7 +57,6 @@ def generate_score_matrix(lmbda_h, lmbda_a, max_goals=6):
     return prob_matrix
 
 
-# =============================================================
 if __name__ == "__main__":
 
     home_team = "Spain"

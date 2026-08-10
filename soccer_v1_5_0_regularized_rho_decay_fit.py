@@ -42,7 +42,7 @@ teams_data = {
 }
 
 
-# Regular time only. Ignore penalty shootouts.
+# regular time only. Ignore penalty shootouts.
 historical_matches = [
     {"home": "Spain", "away": "Austria", "h_goals": 3, "a_goals": 0, "result": "H"},
     {"home": "Portugal", "away": "Croatia", "h_goals": 2, "a_goals": 1, "result": "H"},
@@ -165,7 +165,6 @@ def nll(params):
     return loss + penalty
 
 
-# =============================================================
 if __name__ == "__main__":
 
     if LOCAL_DEV:

@@ -283,7 +283,7 @@ if __name__ == "__main__":
         print(f"  optimal rho: {opt_rho:.4f} " + (
             "(UPPER_BOUND)" if abs(opt_rho - SAFE_RHO_UPPER) < 1e-4 else "(INTERIOR)"))
 
-        # --- run inference ---
+        # run inference
         matches_to_infer = [
             ("Spain", "Argentina")
         ]

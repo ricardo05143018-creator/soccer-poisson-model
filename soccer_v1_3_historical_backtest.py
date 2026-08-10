@@ -69,7 +69,7 @@ def calculate_expected_goals(home_team, away_team):
 
 
 def poisson_probability(lmbda, k):
-    """poisson pmf"""
+    # poisson pmf
     if lmbda <= 0:
         return 0.0 if k > 0 else 1.0
     return (lmbda ** k) * math.exp(-lmbda) / math.factorial(k)
@@ -88,7 +88,7 @@ def dixon_coles_tau(i, j, lmbda_h, lmbda_a, rho=RHO):
 
 
 def generate_score_matrix(lmbda_h, lmbda_a, max_goals=6):
-    """build joint probability matrix"""
+    # build joint probability matrix
     prob_matrix = np.zeros((max_goals, max_goals))
     for i in range(max_goals):
         for j in range(max_goals):

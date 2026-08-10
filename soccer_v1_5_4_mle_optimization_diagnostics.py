@@ -1,4 +1,4 @@
-""""
+"""
 Poisson model v1.5.4
 L2 penalty, bounds check, and match inference loop.
 Date: July 2026
@@ -43,7 +43,7 @@ teams_data = {
     "Belgium":      {"attack": 1.45, "defense": 0.85, "form": 1.06}
 }
 
-# Regular time only. Ignore penalty shootouts.
+# regular time only. Ignore penalty shootouts.
 historical_matches = [
     {"home": "Spain",       "away": "Austria",    "h_goals": 3, "a_goals": 0, "result": "H"},
     {"home": "Portugal",    "away": "Croatia",    "h_goals": 2, "a_goals": 1, "result": "H"},
@@ -146,7 +146,6 @@ def nll(params):
     return loss + penalty
 
 
-# =============================================================
 if __name__ == "__main__":
     if LOCAL_DEV:
         base_rho, base_decay = 0.08, 0.15
@@ -190,7 +189,7 @@ if __name__ == "__main__":
                 tag = " (Optimal Anchor)" if p == 0.0 else ""
                 print(f"  Decay shifted by {p:+.2f} ({test_decay:.4f}) | Regularized NLL: {sim_nll:.4f}{tag}")
 
-            # --- run inference on next match ---
+            # run inference on next match
             next_home = "Spain"
             next_away = "Belgium"
 

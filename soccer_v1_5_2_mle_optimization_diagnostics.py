@@ -43,7 +43,7 @@ teams_data = {
     "Belgium":      {"attack": 1.45, "defense": 0.85, "form": 1.06}
 }
 
-# Regular time only. Ignore penalty shootouts.
+# regular time only. Ignore penalty shootouts.
 historical_matches = [
     {"home": "Spain",       "away": "Austria",    "h_goals": 3, "a_goals": 0, "result": "H"},
     {"home": "Portugal",    "away": "Croatia",    "h_goals": 2, "a_goals": 1, "result": "H"},
@@ -143,7 +143,6 @@ def nll(params):
     return loss + penalty
 
 
-# =============================================================
 if __name__ == "__main__":
     if LOCAL_DEV:
         base_rho, base_decay = 0.08, 0.15
