@@ -35,7 +35,7 @@ teams_data = {
 }
 
 
-# Regular time only. Ignore penalty shootouts.
+# regular time only. Ignore penalty shootouts.
 historical_matches = [
     {"home": "Spain",       "away": "Austria",    "h_goals": 3, "a_goals": 0, "result": "H"},
     {"home": "Portugal",    "away": "Croatia",    "h_goals": 2, "a_goals": 1, "result": "H"},
@@ -138,7 +138,6 @@ def negative_log_likelihood(params):
     return total_neg_ll
 
 
-# =============================================================
 if __name__ == "__main__":
     if LOCAL_DEV:
         initial_rho = 0.08
