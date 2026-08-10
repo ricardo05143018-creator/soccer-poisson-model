@@ -29,8 +29,8 @@ So the regulation-time prediction was wrong. The model rated Spain above Argenti
 | v1.1 | Added a Dixon-Coles-style adjustment for the four lowest score cells | The independent model could not represent low-score dependence |
 | v1.2 | Changed the sign convention for the low-score adjustment and added a hand-tuned form multiplier | With `rho` constrained to be positive, v1.1 moved probability away from the low-score draws I intended to model |
 | v1.3 | Added an outcome-level Brier-score loop | I wanted a numerical check instead of judging predictions one match at a time |
-| v1.4 | Used constrained maximum likelihood to tune `rho` and the form-decay parameter | The fitted parameters immediately exposed a problem: both preferred a boundary |
-| v1.5 | Added L2 regularization, bound checks, and a small decay sensitivity sweep | The regularized fit produced interior values instead of treating boundary solutions as automatically meaningful |
+| v1.4.0 | Used constrained maximum likelihood to tune `rho` and the form-decay parameter | The fitted parameters immediately exposed a problem: both preferred a boundary |
+| v1.5.0 | Added L2 regularization, bound checks, and a small decay sensitivity sweep | The regularized fit produced interior values instead of treating boundary solutions as automatically meaningful |
 | v1.6.0 | Removed the manual team ratings and rebuilt the model around iteratively estimated attack and defense strengths | This was the main shift from a hand-tuned predictor to one fitted from tournament results |
 | v1.6.1 | Added damping and a convergence condition to the iterative updates | The original updates could oscillate instead of settling |
 | v1.6.3 | Added exponential time weighting with a 40-match half-life | Recent matches should affect estimated team strength more than early group-stage matches |
@@ -86,8 +86,8 @@ Start here:
 - `soccer_v1_1_dixon_coles_correction.py` — first low-score adjustment
 - `soccer_v1_2_feature_expansion.py` — revised `rho` convention and form overlay
 - `soccer_v1_3_historical_backtest.py` — initial Brier-score evaluation
-- `soccer_v1_4_mle_parameter_fitting.py` — first constrained MLE fit
-- `soccer_v1_5_joint_mle_calibration.py` — regularized calibration
+- `soccer_v1_4_0_mle_parameter_fitting.py` — first constrained MLE fit
+- `soccer_v1_5_0_regularized_rho_decay_fit.py` — regularized calibration
 - `soccer_v1_6_0_mle_optimization_diagnostics.py` — data-estimated attack and defense strengths
 - `soccer_v1_6_1_mle_optimization_diagnostics.py` — damped convergence
 - `soccer_v1_6_3_mle_optimization_diagnostics.py` — exponential time weighting
